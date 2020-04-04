@@ -6,17 +6,15 @@ import numpy as np
 
 class NswCovidScraper:
     def __init__(self):
-        worldometers_page = requests.get('https://www.worldometers.info/coronavirus/')
-        self.worldometers_soup = BeautifulSoup(worldometers_page.content, 'html.parser')
-
         self.aus_gov_site = 'https://data.nsw.gov.au/data/api/3/action/datastore_search_sql?sql=SELECT'
-        self.aus_gov_resource_id = '21304414-1ff1-4243-a5d2-f52778048b29'
+        self.district_resource_id = '21304414-1ff1-4243-a5d2-f52778048b29'
+        self.age_range_resource_id = '24b34cb5-8b01-4008-9d93-d14cf5518aec'
 
     def get_cases_by_postcode(self, postcode):
         sql_api_query = '''{} notification_date AS case_report_date,
             lhd_2010_name AS region, 
             lga_name19 AS council FROM "{}" WHERE postcode={}'''.format(
-            self.aus_gov_site, self.aus_gov_resource_id, int(postcode)
+            self.aus_gov_site, self.district_resource_id, int(postcode)
             )
         results = requests.get(sql_api_query)
         
@@ -25,7 +23,7 @@ class NswCovidScraper:
     def get_available_councils(self):
         sql_api_query = '''{} DISTINCT 
         lga_name19 AS council FROM "{}"'''.format(
-            self.aus_gov_site, self.aus_gov_resource_id
+            self.aus_gov_site, self.district_resource_id
             )
         results = requests.get(sql_api_query)
         
@@ -35,7 +33,7 @@ class NswCovidScraper:
         sql_api_query = '''{} notification_date AS case_report_date,
             lhd_2010_name AS region, 
             postcode FROM "{}" WHERE council LIKE "{}"'''.format(
-            self.aus_gov_site, self.aus_gov_resource_id, council
+            self.aus_gov_site, self.district_resource_id, council
             )
         results = requests.get(sql_api_query)
         
