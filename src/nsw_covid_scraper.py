@@ -3,46 +3,71 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import sqlite3
+from sqlite3 import Error
+
 
 class NswCovidScraper:
     def __init__(self):
         self.aus_gov_site = 'https://data.nsw.gov.au/data/api/3/action/datastore_search_sql?sql=SELECT'
-        self.district_resource_id = '21304414-1ff1-4243-a5d2-f52778048b29'
-        self.age_range_resource_id = '24b34cb5-8b01-4008-9d93-d14cf5518aec'
+        self.location_rid = '21304414-1ff1-4243-a5d2-f52778048b29'
+        self.age_range_rid = '24b34cb5-8b01-4008-9d93-d14cf5518aec'
+        self.likely_source_rid = '2f1ba0f3-8c21-4a86-acaf-444be4401a6d'
 
-    def get_cases_by_postcode(self, postcode):
-        sql_api_query = '''{} notification_date AS case_report_date,
-            lhd_2010_name AS region, 
-            lga_name19 AS council FROM "{}" WHERE postcode={}'''.format(
-            self.aus_gov_site, self.district_resource_id, int(postcode)
-            )
-        results = requests.get(sql_api_query)
-        
+        self.conn = self.create_connection('covid_cases_nsw.db')
+        self.c = self.conn.cursor()
+
+    def create_connection(self, db_file):
+        """create a database connection to the SQLite database
+            specified by the db_file
+        :param db_file: database file
+        :return: Connection object or None
+        """
+        conn = None
+        try:
+            conn = sqlite3.connect(db_file)
+        except Error as e:
+            print(e)
+
+        return conn
+
+    def update_cases(self):
+        location_api_query = '''{} notification_date, postcode,
+            lhd_2010_code AS local_health_district_code,
+            lhd_2010_name AS local_health_district,
+            lga_code19 AS local_gov_area_code,
+            lga_name19 AS local_gov_area
+            FROM "{}"
+            WHERE notification_date > '''.format(self.aus_gov_site, self.location_rid)
+        results = requests.get(location_api_query)
+
         return results.json()['result']['records']
-    
+
     def get_available_councils(self):
-        sql_api_query = '''{} DISTINCT 
-        lga_name19 AS council FROM "{}"'''.format(
-            self.aus_gov_site, self.district_resource_id
-            )
-        results = requests.get(sql_api_query)
-        
-        return results.json()['result']['records']
+        self.c.execute('''SELECT DISTINCT local_gov_area FROM cases_by_loc''')
+
+        return self.c.fetchall()
 
     def get_cases_by_council(self, council):
-        sql_api_query = '''{} notification_date AS case_report_date,
-            lhd_2010_name AS region, 
-            postcode FROM "{}" WHERE council LIKE "{}"'''.format(
-            self.aus_gov_site, self.district_resource_id, council
-            )
-        results = requests.get(sql_api_query)
+        self.c.execute('''SELECT * FROM cases_by_loc 
+            WHERE local_gov_area like {}'''.format(council))
+
+        return self.c.fetchall()
+
+    def get_cases_by_postcode(self, postcode):
+        self.c.execute('''SELECT * FROM cases_by_loc
+            WHERE postcode = "{}"'''.format(postcode))
+
+        return self.c.fetchall()
+
+    def get_last_case(self, table_name):
+        self.c.execute('''SELECT * FROM "{table}" 
+            WHERE id=(SELECT max(id) FROM {table})'''.format(table = table_name))
         
-        return results.json()['result']['records']
+        return self.c.fetchall()
+
 
 cs = NswCovidScraper()
-# print('Type in a postcode:')
-# postcode = input()
-# print(cs.get_cases_by_postcode(postcode))
-councils = cs.get_available_councils()
-my_df = pd.DataFrame.from_dict(councils)
-print(my_df)
+print('Type in a postcode:')
+postcode = input()
+print(cs.get_cases_by_postcode(postcode))
