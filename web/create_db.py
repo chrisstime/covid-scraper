@@ -27,11 +27,15 @@ conn.commit()
 repo_path = '/home/$USER/Repos/covid_scraper'
 
 # Import data from the data_dumps.
-cases_by_loc_csv = pd.read_csv('{}/data_dumps/covid-19-cases-by-notification-and-location.csv'.format(repo_path))
+cases_by_loc_csv = pd.read_csv(
+    '{}/data_dumps/covid-19-cases-by-notification-and-location.csv'.format(repo_path))
 cases_by_loc_csv.to_sql('cases_by_loc', conn, if_exists='replace', index=False)
 
-cases_by_age_csv = pd.read_csv('{}/data_dumps/covid-19-cases-by-notification-date-and-age-range.csv'.format(repo_path))
+cases_by_age_csv = pd.read_csv(
+    '{}/data_dumps/covid-19-cases-by-notification-date-and-age-range.csv'.format(repo_path))
 cases_by_age_csv.to_sql('cases_by_age', conn, if_exists='replace', index=False)
 
-cases_by_infection_source_csv = pd.read_csv('{}/data_dumps/covid-19-cases-by-notification-date-and-likely-source-of-infection.csv'.format(repo_path))
-cases_by_infection_source_csv.to_sql('cases_by_infection_source', conn, if_exists='replace', index=False)
+cases_by_infection_source_csv = pd.read_csv(
+    '{}/data_dumps/covid-19-cases-by-notification-date-and-likely-source-of-infection.csv'.format(repo_path))
+cases_by_infection_source_csv.to_sql(
+    'cases_by_infection_source', conn, if_exists='replace', index=False)

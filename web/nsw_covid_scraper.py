@@ -3,33 +3,16 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import sqlite3
-from sqlite3 import Error
 
 
 class NswCovidScraper:
-    def __init__(self):
+    def __init__(self, conn):
         self.aus_gov_site = 'https://data.nsw.gov.au/data/api/3/action/datastore_search_sql?sql=SELECT'
         self.location_rid = '21304414-1ff1-4243-a5d2-f52778048b29'
         self.age_range_rid = '24b34cb5-8b01-4008-9d93-d14cf5518aec'
         self.likely_source_rid = '2f1ba0f3-8c21-4a86-acaf-444be4401a6d'
 
-        self.conn = self.create_connection('covid_cases_nsw.db')
-        self.c = self.conn.cursor()
-
-    def create_connection(self, db_file):
-        """create a database connection to the SQLite database
-            specified by the db_file
-        :param db_file: database file
-        :return: Connection object or None
-        """
-        conn = None
-        try:
-            conn = sqlite3.connect(db_file)
-        except Error as e:
-            print(e)
-
-        return conn
+        self.c = conn.cursor()
 
     def update_cases(self):
         location_api_query = '''{} notification_date, postcode,
@@ -65,9 +48,3 @@ class NswCovidScraper:
             WHERE id=(SELECT max(id) FROM {table})'''.format(table = table_name))
         
         return self.c.fetchall()
-
-
-cs = NswCovidScraper()
-print('Type in a postcode:')
-postcode = input()
-print(cs.get_cases_by_postcode(postcode))
