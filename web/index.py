@@ -1,13 +1,16 @@
 from flask import Blueprint, render_template, abort
-from jinja2 import TemplateNotFound 
+from jinja2 import TemplateNotFound
+from .db import create_connection
+from .nsw_covid_scraper import NswCovidScraper
 
-index = Blueprint('index', __name__,
+INDEX_BLUEPRINT = Blueprint('index', __name__,
                         template_folder='templates')
 
-@index.route('/', defaults={'page': 'index'})
-@index.route('/<page>')
-def show(page):
+@INDEX_BLUEPRINT.route('/')
+def index():
     try:
-        return render_template('pages/%s.html' % page)
+        conn = create_connection('covid_cases_nsw.db')
+        nsw_cs = NswCovidScraper(conn)
+        return render_template('index.html', nsw_cs=nsw_cs)
     except TemplateNotFound:
         abort(404)
