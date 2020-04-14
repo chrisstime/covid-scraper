@@ -28,8 +28,10 @@ class NswCovidScraper:
 
     def get_available_councils(self):
         self.c.execute('''SELECT DISTINCT local_gov_area FROM cases_by_loc''')
-
-        return self.c.fetchall()
+        councils = [str(results[0]) for results in self.c.fetchall()]
+        councils.sort()
+        
+        return councils
 
     def get_cases_by_council(self, council):
         self.c.execute('''SELECT * FROM cases_by_loc 

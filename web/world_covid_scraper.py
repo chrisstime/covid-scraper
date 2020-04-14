@@ -17,3 +17,12 @@ class WorldCovidScraper:
             countries.append(country.get_text())
 
         return countries
+    
+    def get_worldwide_cases(self):
+        main_counter = self.worldometers_soup.find_all(attrs={ "class": "maincounter-number"})
+        cases_tally = {}
+        cases_tally['cases'] = main_counter[0].get_text()
+        cases_tally['deaths'] = main_counter[1].get_text()
+        cases_tally['recovered'] = main_counter[2].get_text()
+
+        return cases_tally
