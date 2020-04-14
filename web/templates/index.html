@@ -1,28 +1,97 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Covid Scraper</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-      rel="stylesheet"
-      media="screen"
-    />
-    <style type="text/css">
-      .container {
-        max-width: 500px;
-        padding-top: 100px;
-      }
-    </style>
-  </head>
-  <body>
+{% include 'header.html' %}
+
+  <section id="intro">
     <div class="container">
-      <h1>Covid Scraper</h1>
-      <p>
-        <a>{{ nsw_cs.get_available_councils() }}</a>
-      </p>
+      <div class="row">
+        <div class="span8">
+          <p class="lead">A web scraper for COVID-19 cases around the world.</p>
+        </div>
+      </div>
     </div>
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  </body>
-</html>
+  </section>
+  
+  <section id="maincontent">
+    <div class="container">
+      <div class="row">
+        <div class="span6">
+          <h1>Reported Cases Worldwide: {{ world_cases['cases'] }}</h1>   
+        </div>
+      </div>
+      <div class="row">
+        <div class="span6">
+          <div class="progress progress-striped active">
+            <div class="bar" style="width: {{ percentage(world_cases['recovered'],world_cases['cases']) }}%">
+            </div>
+          </div>
+          <h3>Total Number of Recovered: {{ world_cases['recovered'] }}</h3>
+        </div>
+
+        <div class="span6">
+          <div class="progress progress-danger">
+            <div class="bar" style="width: {{ percentage(world_cases['deaths'],world_cases['cases']) }}%">
+            </div>
+          </div>
+          <h3>Total Number of Deaths: {{ world_cases['deaths'] }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="span5">
+          <div class="features">
+            <div class="icon">
+              <i class="icon-bg-light icon-circled icon-home icon-5x active"></i>
+            </div>
+            <div class="features_content">
+              <h3>Cases in Australia</h3>
+              <p class="left">
+                Search cases by state, postcode, government area or notification date.
+              </p>
+              <a href="#" class="btn btn-color btn-rounded"><i class="icon-angle-right"></i> Search</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="span5">
+          <div class="features">
+            <div class="icon">
+              <i class="icon-bg-light icon-circled icon-globe icon-5x"></i>
+            </div>
+            <div class="features_content">
+              <h3>Cases Worldwide</h3>
+              <p class="left">
+                General COVID-19 statistics around the world.
+              </p>
+              <a href="#" class="btn btn-color btn-rounded"><i class="icon-angle-right"></i> Search</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- blank divider -->
+      <div class="row">
+        <div class="span12">
+          <div class="blank10"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span12">
+          <div class="cta-box">
+            <div class="cta-text">
+              <h2>What is COVID-19?</h2>
+            </div>
+            <div class="cta">
+              <a class="btn btn-large btn-rounded btn-color" href="{{ url_for('about.about') }}">
+					<i class="icon-chevron-right"></i> Find out more</a>
+            </div>
+          </div>
+          <!-- end tagline -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  {% include 'footer.html' %}

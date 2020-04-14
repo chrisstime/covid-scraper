@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>COVID-19 Scraper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Clean responsive bootstrap website template">
+  <meta name="author" content="">
+  <!-- styles -->
+  <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/docs.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/prettyPhoto.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='js/google-code-prettify/prettify.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/flexslider.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/refineslide.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/font-awesome.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700" rel="stylesheet">
+
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='color/default.css') }}" rel="stylesheet">
+
+  <!-- fav and touch icons -->
+  <link rel="shortcut icon" href="{{ url_for('static', filename='ico/favicon.ico') }}">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url_for('static', filename='ico/apple-touch-icon-144-precomposed.png') }}">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ url_for('static', filename='ico/apple-touch-icon-114-precomposed.png') }}">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ url_for('static', filename='ico/apple-touch-icon-72-precomposed.png') }}">
+  <link rel="apple-touch-icon-precomposed" href="{{ url_for('static', filename='ico/apple-touch-icon-57-precomposed.png') }}">
+
+  <!-- =======================================================
+    Theme Name: Plato
+    Theme URL: https://bootstrapmade.com/plato-responsive-bootstrap-website-template/
+    Author: BootstrapMade.com
+    Author URL: https://bootstrapmade.com
+  ======================================================= -->
+</head>
+
+<body>
+  <header>
+    <!-- Navbar
+    ================================================== -->
+    <div class="cbp-af-header">
+      <div class=" cbp-af-inner">
+        <div class="container">
+          <div class="row">
+
+            <div class="span4">
+              <!-- logo -->
+              <div class="logo">
+                <h2>
+                  <a href="{{ url_for('index.index') }}">
+                    <strong class="highlight">COVID-19 <span class="highlight primary">Web Scraper</span></strong>
+                  </a>
+                </h2>
+                <!-- <img src="assets/img/logo.png" alt="" /> -->
+              </div>
+              <!-- end logo -->
+            </div>
+
+            <div class="span8">
+              <!-- top menu -->
+              <div class="navbar">
+                <div class="navbar-inner">
+                  <nav>
+                    <ul class="nav topnav">
+                      <li class="dropdown active">
+                        <a href="{{ url_for('index.index')}}">Home</a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#">Pages</a>
+                        <ul class="dropdown-menu">
+                          <li><a href="{{ url_for('about.about') }}">What is COVID-19?</a></li>
+                          <li><a href="pricingtable.html">Pricing table</a></li>
+                          <li><a href="fullwidth.html">Fullwidth</a></li>
+                          <li><a href="404.html">404</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+              <!-- end menu -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
