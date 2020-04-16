@@ -11,6 +11,7 @@ def worldwide():
         wcs = WorldCovidScraper()
         return render_template(
             'worldwide.html', title='COVID-19 Cases Worldwide',
+            location='Worldwide',
             affected_countries=wcs.get_affected_countries()
             )
     except TemplateNotFound:

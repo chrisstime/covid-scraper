@@ -1,3 +1,28 @@
-{% include 'header.html' %}
-
+{% include 'header.html' %} {% include 'sub-intro.html' %}
+<section id="maincontent">
+    <div class="container">
+        <div class="row">
+            <form>
+                <div class="form-group">
+                    <div class="span4">
+                        <label for="councils">Select Council:</label>
+                        <select class="form-control" id="councils">
+                            {% for council in councils %}
+                            <option value="{{ council }}">{{ council }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="span2">
+                        <p><strong>OR</strong></p>
+                    </div>
+                    <div class="span4">
+                        <label for="postcode">Find by Postcode:</label>
+                        <input type="text" class="form-control" id="postcode" placeholder="Type in Postcode">
+                    </div>
+                </div>
+                <button class="btn btn-large btn-rounded btn-color" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</section>
 {% include 'footer.html' %}
