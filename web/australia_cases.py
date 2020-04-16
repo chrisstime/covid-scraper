@@ -15,7 +15,8 @@ def australia():
             'australia.html', title='COVID-19 Cases in Australia',
             location='in Australia',
             councils=acs.get_available_councils(),
-            results=results
+            results=results,
+            new_cases=acs.update_cases()
             )
     except TemplateNotFound:
         abort(404)

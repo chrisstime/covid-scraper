@@ -15,6 +15,7 @@ def init_db():
     with current_app.open_resource(os.path.join(APP_ROOT, 'schema.sql')) as f:
         db.executescript(f.read().decode('utf8'))
     
+    db.commit()
     populate_db()
 
 @click.command('init-db')
@@ -54,15 +55,15 @@ def populate_db():
     # Import data from the data_dumps.
     cases_by_loc_csv = pd.read_csv(
         '{}/data_dumps/covid-19-cases-by-notification-and-location.csv'.format(repo_path))
-    cases_by_loc_csv.to_sql('cases_by_loc', conn, if_exists='replace', index=False)
+    cases_by_loc_csv.to_sql('cases_by_loc', conn, if_exists='append', index=False)
 
     cases_by_age_csv = pd.read_csv(
         '{}/data_dumps/covid-19-cases-by-notification-date-and-age-range.csv'.format(repo_path))
-    cases_by_age_csv.to_sql('cases_by_age', conn, if_exists='replace', index=False)
+    cases_by_age_csv.to_sql('cases_by_age', conn, if_exists='append', index=False)
 
     cases_by_infection_source_csv = pd.read_csv(
         '{}/data_dumps/covid-19-cases-by-notification-date-and-likely-source-of-infection.csv'.format(repo_path))
     cases_by_infection_source_csv.to_sql(
-        'cases_by_infection_source', conn, if_exists='replace', index=False)
+        'cases_by_infection_source', conn, if_exists='append', index=False)
 
     close_db()

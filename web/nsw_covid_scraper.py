@@ -12,15 +12,21 @@ class NswCovidScraper:
         self.location_rid = '21304414-1ff1-4243-a5d2-f52778048b29'
         self.age_range_rid = '24b34cb5-8b01-4008-9d93-d14cf5518aec'
         self.likely_source_rid = '2f1ba0f3-8c21-4a86-acaf-444be4401a6d'
+        self.cases_by_loc_table = 'cases_by_loc'
+        self.cases_by_age_range_table = 'cases_by_age'
+        self.cases_by_infection_source_table = 'cases_by_infection_source'
 
     def update_cases(self):
-        location_api_query = '''{} notification_date, postcode,
+        location_api_query = '''{} _id as id, notification_date, postcode,
             lhd_2010_code AS local_health_district_code,
             lhd_2010_name AS local_health_district,
             lga_code19 AS local_gov_area_code,
             lga_name19 AS local_gov_area
             FROM "{}"
-            WHERE notification_date > '''.format(self.aus_gov_site, self.location_rid)
+            WHERE _id > {}'''.format(
+                self.aus_gov_site, self.location_rid,
+                self.get_last_case_update(self.cases_by_loc_table)
+                )
         results = requests.get(location_api_query)
 
         return results.json()['result']['records']
@@ -52,11 +58,11 @@ class NswCovidScraper:
 
         return cases
 
-    def get_last_case(self, table_name):
+    def get_last_case_update(self, table_name):
         c = get_db().cursor()
-        c.execute('''SELECT * FROM "{table}" 
+        c.execute('''SELECT id FROM "{table}" 
             WHERE id=(SELECT max(id) FROM {table})'''.format(table = table_name))
-        last_case = [result for result in c.fetchall()]
+        last_case_update = c.fetchone()
         close_db()
 
-        return last_case
+        return last_case_update[0]
