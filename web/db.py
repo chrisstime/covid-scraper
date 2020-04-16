@@ -2,45 +2,51 @@ import sqlite3
 from sqlite3 import Error
 import pandas as pd
 from pandas import DataFrame
+import click
+from flask import current_app, g
+from flask.cli import with_appcontext
 
-def create_connection(db_file):
-    """create a database connection to the SQLite database
-        specified by the db_file
-    :param db_file: database file
-    :return: Connection object or None
-    """
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-    except Error as e:
-        print(e)
+def init_db():
+    db = get_db()
 
-    return conn
+    with current_app.open_resource('schema.sql') as f:
+        db.executescript(f.read().decode('utf8'))
+    
+    populate_db()
 
-def create_db():
+@click.command('init-db')
+@with_appcontext
+def init_db_command():
+    """Clear the existing data and create new tables."""
+    init_db()
+    click.echo('Initialized the database.')
+
+def get_db():
+    if 'db' not in g:
+        g.db = sqlite3.connect(
+            'covid_cases_nsw.db',
+            detect_types=sqlite3.PARSE_DECLTYPES
+        )
+        g.db.row_factory = sqlite3.Row
+
+    return g.db
+
+def init_app(app):
+    app.teardown_appcontext(close_db)
+    app.cli.add_command(init_db_command)
+
+def close_db(e=None):
+    db = g.pop('db', None)
+
+    if db is not None:
+        db.close()
+
+def populate_db():
     # CREATE CONNECTION TO SQLITE DB. IT WILL CREATE IF NONE EXISTS.
-    conn = sqlite3.connect('covid_cases_nsw.db')
-    c = conn.cursor()
-
-    # CREATE TABLES
-    # RUN THE CODE BELOW WHEN CREATING THE TABLES FOR THE FIRST TIME. OTHERWISE COMMENT OUT.
-
-    c.execute('''CREATE TABLE cases_by_loc
-                ([id] INTEGER PRIMARY KEY, [notification_date] datetime, [postcode] int,
-                [local_health_district_code] text, [local_health_district] text, 
-                [local_gov_area_code] int, [local_gov_area] text)''')
-
-    c.execute('''CREATE TABLE cases_by_age
-                ([id] INTEGER PRIMARY KEY, [notification_date] datetime, [age_group] text)''')
-
-    c.execute('''CREATE TABLE cases_by_infection_source
-                ([id] INTEGER PRIMARY KEY, [notification_date] datetime, [likely_source] text)''')
-
-    conn.commit()
-    # END CREATE TABLES
+    conn = get_db()
 
     # Update repo_path with local repo location.
-    repo_path = '/home/$USER/Repos/covid_scraper'
+    repo_path = '/home/christine/Repos/covid_scraper'
 
     # Import data from the data_dumps.
     cases_by_loc_csv = pd.read_csv(
@@ -55,3 +61,5 @@ def create_db():
         '{}/data_dumps/covid-19-cases-by-notification-date-and-likely-source-of-infection.csv'.format(repo_path))
     cases_by_infection_source_csv.to_sql(
         'cases_by_infection_source', conn, if_exists='replace', index=False)
+
+    close_db()
