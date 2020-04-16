@@ -15,8 +15,9 @@ class WorldCovidScraper:
         countries = []
         for country in country_tags:
             countries.append(country.get_text())
-
-        return countries
+        set_countries = set(countries)
+        
+        return set_countries
     
     def get_worldwide_cases(self):
         main_counter = self.worldometers_soup.find_all(attrs={ "class": "maincounter-number"})
