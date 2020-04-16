@@ -1,0 +1,40 @@
+<div class="cbp-af-header">
+    <div class=" cbp-af-inner">
+      <div class="container">
+        <div class="row">
+
+          <div class="span4">
+            <!-- logo -->
+            <div class="logo">
+              <h2>
+                <a href="{{ url_for('index.index') }}">
+                  <strong class="highlight">COVID-19 <span class="highlight primary">Web Scraper</span></strong>
+                </a>
+              </h2>
+              <!-- <img src="assets/img/logo.png" alt="" /> -->
+            </div>
+            <!-- end logo -->
+          </div>
+
+          <div class="span8">
+            <!-- top menu -->
+            <div class="navbar">
+              <div class="navbar-inner">
+                <nav>
+                  <ul class="nav topnav">
+                    <li class="dropdown active">
+                      <a href="{{ url_for('index.index')}}">Home</a>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#">Pages</a>
+                      <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('about.about') }}">What is COVID-19?</a></li>
+                        <li><a href="{{ url_for('worldwide.worldwide') }}">COVID-19 Cases Worldwide</a></li>
+                        <li><a href="{{ url_for('australia.australia') }}">COVID-19 Cases in Australia</a></li>
+                        <li><a href="404.html">404</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
