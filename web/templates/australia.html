@@ -7,6 +7,7 @@
                     <div class="span4">
                         <label for="councils">Select Council:</label>
                         <select class="form-control" id="councils">
+                            <option disabled selected value> -- select a council -- </option>
                             {% for council in councils %}
                             <option value="{{ council }}">{{ council }}</option>
                             {% endfor %}
@@ -17,11 +18,34 @@
                     </div>
                     <div class="span4">
                         <label for="postcode">Find by Postcode:</label>
-                        <input type="text" class="form-control" id="postcode" placeholder="Type in Postcode">
+                        <input type="text" class="form-control" id="postcode" placeholder="Type in a Postcode">
                     </div>
                 </div>
                 <button class="btn btn-large btn-rounded btn-color" type="submit">Search</button>
             </form>
+        </div>
+
+        <div class="row">
+            <h4>Results</h4>
+            <table class="table table-striped">
+                <thead>
+                    <th>Notification Date</th>
+                    <th>Postcode</th>
+                    <th>Local Health District Code</th>
+                    <th>Local Health District</th>
+                    <th>Local Gov Area Code</th>
+                    <th>Local Gov Area</th>
+                </thead>
+                <tbody>
+                    {% for row in results %}
+                    <tr>
+                        {% for item in row %}
+                            <td>{{item}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </section>

@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from sqlite3 import Error
 import pandas as pd
@@ -6,10 +7,12 @@ import click
 from flask import current_app, g
 from flask.cli import with_appcontext
 
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 def init_db():
     db = get_db()
 
-    with current_app.open_resource('schema.sql') as f:
+    with current_app.open_resource(os.path.join(APP_ROOT, 'schema.sql')) as f:
         db.executescript(f.read().decode('utf8'))
     
     populate_db()
@@ -24,7 +27,7 @@ def init_db_command():
 def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect(
-            'covid_cases_nsw.db',
+            os.path.join(APP_ROOT, 'covid_cases_nsw.db'),
             detect_types=sqlite3.PARSE_DECLTYPES
         )
         g.db.row_factory = sqlite3.Row

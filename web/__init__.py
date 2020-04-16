@@ -5,7 +5,7 @@ from .index import INDEX_BLUEPRINT
 from .about import ABOUT_BLUEPRINT
 from .world_cases import WORLDWIDE_BLUEPRINT
 from .australia_cases import AUSTRALIA_BLUEPRINT
-from . import db
+from db import db
 
 APP = Flask(__name__)
 db.init_app(APP)

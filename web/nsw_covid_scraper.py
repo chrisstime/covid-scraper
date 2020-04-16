@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from .db import get_db, close_db
+from db.db import get_db, close_db
 
 
 class NswCovidScraper:
@@ -38,7 +38,7 @@ class NswCovidScraper:
         c = get_db().cursor()
         c.execute('''SELECT * FROM cases_by_loc 
             WHERE local_gov_area like {}'''.format(council))
-        cases = c.fetchall()
+        cases = [[item for item in results] for results in c.fetchall()]
         close_db()
 
         return cases
@@ -47,7 +47,7 @@ class NswCovidScraper:
         c = get_db().cursor()
         c.execute('''SELECT * FROM cases_by_loc
             WHERE postcode = "{}"'''.format(postcode))
-        cases = c.fetchall()
+        cases = [[item for item in results] for results in c.fetchall()]
         close_db()
 
         return cases
@@ -56,7 +56,7 @@ class NswCovidScraper:
         c = get_db().cursor()
         c.execute('''SELECT * FROM "{table}" 
             WHERE id=(SELECT max(id) FROM {table})'''.format(table = table_name))
-        last_case = c.fetchall()
+        last_case = [result for result in c.fetchall()]
         close_db()
 
         return last_case

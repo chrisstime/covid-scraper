@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, url_for
+from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
 from .world_covid_scraper import WorldCovidScraper
 
