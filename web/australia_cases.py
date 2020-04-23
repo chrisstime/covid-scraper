@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort, request
 from jinja2 import TemplateNotFound
-from .nsw_covid_scraper import NswCovidScraper
+from .scrapers.nsw_covid_scraper import NswCovidScraper
 
 AUSTRALIA_BLUEPRINT = Blueprint('australia', __name__,
                         template_folder='templates')

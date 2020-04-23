@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
-from .world_covid_scraper import WorldCovidScraper
+from .scrapers.world_covid_scraper import WorldCovidScraper
 from .helper import calculate_percentage
 
 INDEX_BLUEPRINT = Blueprint('index', __name__,

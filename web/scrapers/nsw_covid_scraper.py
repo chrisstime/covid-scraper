@@ -26,7 +26,7 @@ class NswCovidScraper:
             FROM "{}"
             WHERE _id > {}'''.format(
                 self.aus_gov_site, self.location_rid,
-                self.get_last_case_update(self.cases_by_loc_table)
+                self.get_last_case_id(self.cases_by_loc_table)
                 )
         response = requests.get(location_api_query)
         json_response = response.json()
@@ -63,23 +63,14 @@ class NswCovidScraper:
     def get_cases_by_postcode(self, postcode):
         c = get_db().cursor()
         c.execute('''SELECT * FROM cases_by_loc
-            WHERE postcode = "{}"'''.format(postcode))
+            WHERE postcode LIKE "{}"'''.format(postcode))
         cases = [[item for item in results] for results in c.fetchall()]
         c.close()
         close_db()
 
         return cases
 
-    def get_total_cases(self):
-        c = get_db().cursor()
-        c.execute('''SELECT COUNT(id) FROM "cases_by_loc"''')
-        total = c.fetchone()
-        c.close()
-        close_db()
-
-        return total[0]
-
-    def get_last_case_update(self, table_name):
+    def get_last_case_id(self, table_name):
         c = get_db().cursor()
         c.execute('''SELECT id FROM "{table}" 
             WHERE id=(SELECT max(id) FROM {table})'''.format(table = table_name))
@@ -88,3 +79,6 @@ class NswCovidScraper:
         close_db()
 
         return last_case_update[0]
+
+    def get_total_cases(self):
+        return self.get_last_case_id('cases_by_loc')

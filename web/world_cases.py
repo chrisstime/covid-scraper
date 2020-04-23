@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
-from .world_covid_scraper import WorldCovidScraper
+from .scrapers.world_covid_scraper import WorldCovidScraper
 
 WORLDWIDE_BLUEPRINT = Blueprint('worldwide', __name__,
                         template_folder='templates')

@@ -12,7 +12,7 @@
             <div class="span12">
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#nsw" data-toggle="tab"><i class="icon-briefcase"></i> NSW</a></li>
+                        <li class="active"><a href="#nsw" data-toggle="tab">NSW</a></li>
                         <li><a href="#vic" data-toggle="tab">VIC</a></li>
                         <li><a href="#qld" data-toggle="tab">QLD</a></li>
                     </ul>
@@ -20,7 +20,7 @@
                         <div class="tab-pane active" id="nsw">
                             <div class="row">
                                 <div class="span6">
-                                    <h5>Total Cases in NSW: {{ total_cases_nsw }}</h5>
+                                    <h5>Total Cases in NSW: <strong>{{ total_cases_nsw }}</strong></h5>
                                 </div>
                             </div>
                             <div class="row">
@@ -73,6 +73,18 @@
                         </div>
                         <div class="tab-pane" id="vic"></div>
                         <div class="tab-pane" id="qld"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="update-cases-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Update Success!
+                    </div>
+                    <div class="modal-body">
+        
                     </div>
                 </div>
             </div>
