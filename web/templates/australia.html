@@ -3,6 +3,13 @@
     <div class="container">
         <div class="row">
             <div class="span12">
+                <button class="btn btn-large btn-rounded btn-primary pull-right" id="update-cases">
+                    Update Cases <i class="icon-refresh"></i>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12">
                 <div class="tabbable">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#nsw" data-toggle="tab"><i class="icon-briefcase"></i> NSW</a></li>
@@ -14,11 +21,6 @@
                             <div class="row">
                                 <div class="span6">
                                     <h5>Total Cases in NSW: {{ total_cases_nsw }}</h5>
-                                </div>
-                                <div class="span5">
-                                    <button class="btn btn-large btn-rounded btn-primary pull-right" id="update-cases">
-                                        Update Cases <i class="icon-refresh"></i>
-                                    </button>
                                 </div>
                             </div>
                             <div class="row">
