@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+from pandas import DataFrame
 import matplotlib.pyplot as plt
 import numpy as np
 from db.db import get_db, close_db
@@ -27,14 +28,23 @@ class NswCovidScraper:
                 self.aus_gov_site, self.location_rid,
                 self.get_last_case_update(self.cases_by_loc_table)
                 )
-        results = requests.get(location_api_query)
+        response = requests.get(location_api_query)
+        json_response = response.json()
+        self._insert_records_to_db(json_response['result']['records'])
 
-        return results.json()['result']['records']
+        return json_response['success']
+
+    def _insert_records_to_db(self, records):
+        conn = get_db()
+        df = DataFrame(records)
+        df.to_sql('cases_by_loc', conn, if_exists='append', index=False)
+        close_db()
 
     def get_available_councils(self):
         c = get_db().cursor()
         c.execute('''SELECT DISTINCT local_gov_area FROM cases_by_loc''')
         councils = [str(results[0]) for results in c.fetchall()]
+        c.close()
         close_db()
         councils.sort()
         
@@ -45,6 +55,7 @@ class NswCovidScraper:
         c.execute('''SELECT * FROM cases_by_loc 
             WHERE local_gov_area like {}'''.format(council))
         cases = [[item for item in results] for results in c.fetchall()]
+        c.close()
         close_db()
 
         return cases
@@ -54,15 +65,26 @@ class NswCovidScraper:
         c.execute('''SELECT * FROM cases_by_loc
             WHERE postcode = "{}"'''.format(postcode))
         cases = [[item for item in results] for results in c.fetchall()]
+        c.close()
         close_db()
 
         return cases
+
+    def get_total_cases(self):
+        c = get_db().cursor()
+        c.execute('''SELECT COUNT(id) FROM "cases_by_loc"''')
+        total = c.fetchone()
+        c.close()
+        close_db()
+
+        return total[0]
 
     def get_last_case_update(self, table_name):
         c = get_db().cursor()
         c.execute('''SELECT id FROM "{table}" 
             WHERE id=(SELECT max(id) FROM {table})'''.format(table = table_name))
         last_case_update = c.fetchone()
+        c.close()
         close_db()
 
         return last_case_update[0]

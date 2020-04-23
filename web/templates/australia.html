@@ -2,52 +2,78 @@
 <section id="maincontent">
     <div class="container">
         <div class="row">
-            <form>
-                <div class="form-group">
-                    <div class="span4">
-                        <label for="councils">Select Council:</label>
-                        <select class="form-control" id="councils">
-                            <option disabled selected value> -- select a council -- </option>
-                            {% for council in councils %}
-                            <option value="{{ council }}">{{ council }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="span2">
-                        <p><strong>OR</strong></p>
-                    </div>
-                    <div class="span4">
-                        <label for="postcode">Find by Postcode:</label>
-                        <input type="text" class="form-control" id="postcode" placeholder="Type in a Postcode">
+            <div class="span12">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#nsw" data-toggle="tab"><i class="icon-briefcase"></i> NSW</a></li>
+                        <li><a href="#vic" data-toggle="tab">VIC</a></li>
+                        <li><a href="#qld" data-toggle="tab">QLD</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="nsw">
+                            <div class="row">
+                                <div class="span6">
+                                    <h5>Total Cases in NSW: {{ total_cases_nsw }}</h5>
+                                </div>
+                                <div class="span5">
+                                    <button class="btn btn-large btn-rounded btn-primary pull-right" id="update-cases">
+                                        Update Cases <i class="icon-refresh"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <form>
+                                    <div class="form-group">
+                                        <div class="span4">
+                                            <label for="councils">Select Council:</label>
+                                            <select class="form-control" id="councils">
+                                                <option disabled selected value> -- select a council -- </option>
+                                                {% for council in councils %}
+                                                <option value="{{ council }}">{{ council }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="span2">
+                                            <p><strong>OR</strong></p>
+                                        </div>
+                                        <div class="span2">
+                                            <label for="postcode">Find by Postcode:</label>
+                                            <input type="text" class="form-control" id="postcode" placeholder="Type in a Postcode">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row">
+                                <div class="span11">
+                                    <h4>Results</h4>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <th>ID</th>
+                                            <th>Notification Date</th>
+                                            <th>Postcode</th>
+                                            <th>Local Health District Code</th>
+                                            <th>Local Health District</th>
+                                            <th>Local Gov Area Code</th>
+                                            <th>Local Gov Area</th>
+                                        </thead>
+                                        <tbody>
+                                            {% for row in results %}
+                                            <tr>
+                                                {% for item in row %}
+                                                    <td>{{item}}</td>
+                                                {% endfor %}
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="vic"></div>
+                        <div class="tab-pane" id="qld"></div>
                     </div>
                 </div>
-                <button class="btn btn-large btn-rounded btn-color" type="submit">Search</button>
-            </form>
-        </div>
-
-        <div class="row">
-            <h4>Results</h4>
-            <table class="table table-striped">
-                <thead>
-                    <th>ID</th>
-                    <th>Notification Date</th>
-                    <th>Postcode</th>
-                    <th>Local Health District Code</th>
-                    <th>Local Health District</th>
-                    <th>Local Gov Area Code</th>
-                    <th>Local Gov Area</th>
-                </thead>
-                <tbody>
-                    {% for row in results %}
-                    <tr>
-                        {% for item in row %}
-                            <td>{{item}}</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <p>{{ new_cases }}</p>
+            </div>
         </div>
     </div>
 </section>
