@@ -12,7 +12,7 @@ def index():
         world_cs = WorldCovidScraper()
         return render_template(
             'index.html', title='COVID-19 Scraper',
-            world_cases = world_cs.get_worldwide_cases(),
+            covid_cases = world_cs.get_worldwide_cases(),
             percentage = calculate_percentage
             )
     except TemplateNotFound:

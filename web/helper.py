@@ -1,7 +1,9 @@
 def calculate_percentage(numerator, denominator):
-    return (__to_int(numerator)/__to_int(denominator)) * 100
+    percentage = (_to_int(numerator)/_to_int(denominator)) * 100
+    
+    return '{0:.2f}%'.format(percentage)
 
-def __to_int(number):
+def _to_int(number):
     n = number.replace(',', '')
 
     return int(n)
