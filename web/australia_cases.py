@@ -19,14 +19,3 @@ def australia():
             )
     except TemplateNotFound:
         abort(404)
-
-@AUSTRALIA_BLUEPRINT.route('/_search_by_postcode')
-def search_by_postcode():
-    postcode = request.args.get('postcode', 0, type=int)
-    results = NCS.get_cases_by_postcode(postcode)
-    
-    return jsonify(results)
-
-@AUSTRALIA_BLUEPRINT.route('/_update_cases')
-def update_cases():
-    NCS.update_cases()
