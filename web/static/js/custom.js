@@ -23,22 +23,22 @@ jQuery(document).ready(function ($) {
       optionsList = '<option value="" selected>Go to..</option>';
 
     $menu.find('li').each(function () {
-        var $this = $(this),
-          $anchor = $this.children('a'),
-          depth = $this.parents('ul').length - 1,
-          indent = '';
+      var $this = $(this),
+        $anchor = $this.children('a'),
+        depth = $this.parents('ul').length - 1,
+        indent = '';
 
-        if (depth) {
-          while (depth > 0) {
-            indent += ' - ';
-            depth--;
-          }
-
+      if (depth) {
+        while (depth > 0) {
+          indent += ' - ';
+          depth--;
         }
-        $(".nav li").parent().addClass("bold");
 
-        optionsList += '<option value="' + $anchor.attr('href') + '">' + indent + ' ' + $anchor.text() + '</option>';
-      }).end()
+      }
+      $(".nav li").parent().addClass("bold");
+
+      optionsList += '<option value="' + $anchor.attr('href') + '">' + indent + ' ' + $anchor.text() + '</option>';
+    }).end()
       .after('<select class="selectmenu">' + optionsList + '</select>');
 
     $('select.selectmenu').on('change', function () {
@@ -132,5 +132,52 @@ jQuery(document).ready(function ($) {
 
   });
 
+  // custom js for cases_in_australia page.
+  $('#update-cases').click(function () {
+    $('#update-cases-modal').modal('toggle');
+  });
 
+  $('#council-search').change(
+    function() {
+      // Declare variables
+      var input, filter, tr, th, td, i, txtValue;
+      input = document.getElementById('council-search');
+      filter = input.value.toUpperCase();
+      th = document.getElementById("results");
+      tr = th.getElementsByTagName('tr');
+
+      // Loop through all list items, and hide those who don't match the search query
+      for (i = 1; i < tr.length; i++) {
+        td = tr[i].children[6];
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  );
+
+  $('#postcode-search').keyup(
+    function() {
+      // Declare variables
+      var input, filter, tr, th, td, i, txtValue;
+      input = document.getElementById('postcode-search');
+      filter = input.value.toUpperCase();
+      th = document.getElementById("results");
+      tr = th.getElementsByTagName('tr');
+
+      // Loop through all list items, and hide those who don't match the search query
+      for (i = 1; i < tr.length; i++) {
+          td = tr[i].children[2];
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+          } else {
+              tr[i].style.display = "none";
+          }
+      }
+    }
+  );
 });

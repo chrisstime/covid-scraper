@@ -3,7 +3,8 @@
     <div class="container">
         <div class="row">
             <div class="span12">
-                <button class="btn btn-large btn-rounded btn-primary pull-right" id="update-cases">
+                <button class="btn btn-large btn-rounded btn-primary pull-right" id="update-cases"
+                    onClick="{{ update_cases }}">
                     Update Cases <i class="icon-refresh"></i>
                 </button>
             </div>
@@ -27,8 +28,8 @@
                                 <form>
                                     <div class="form-group">
                                         <div class="span4">
-                                            <label for="councils">Select Council:</label>
-                                            <select class="form-control" id="councils">
+                                            <label for="council-search">Select Council:</label>
+                                            <select class="form-control" id="council-search">
                                                 <option disabled selected value> -- select a council -- </option>
                                                 {% for council in councils %}
                                                 <option value="{{ council }}">{{ council }}</option>
@@ -39,8 +40,9 @@
                                             <p><strong>OR</strong></p>
                                         </div>
                                         <div class="span2">
-                                            <label for="postcode">Find by Postcode:</label>
-                                            <input type="text" class="form-control" id="postcode" placeholder="Type in a Postcode">
+                                            <label for="postcode-search">Find by Postcode:</label>
+                                            <input type="text" class="form-control" id="postcode-search"
+                                                placeholder="Search by postcode...">
                                         </div>
                                     </div>
                                 </form>
@@ -48,21 +50,21 @@
                             <div class="row">
                                 <div class="span11">
                                     <h4>Results</h4>
-                                    <table class="table table-striped">
+                                    <table class="table table-striped" id="results">
                                         <thead>
                                             <th>ID</th>
                                             <th>Notification Date</th>
-                                            <th>Postcode</th>
+                                            <th id="postcode">Postcode</th>
                                             <th>Local Health District Code</th>
                                             <th>Local Health District</th>
                                             <th>Local Gov Area Code</th>
-                                            <th>Local Gov Area</th>
+                                            <th id="councils">Local Gov Area</th>
                                         </thead>
                                         <tbody>
                                             {% for row in results %}
                                             <tr>
                                                 {% for item in row %}
-                                                    <td>{{item}}</td>
+                                                <td>{{item}}</td>
                                                 {% endfor %}
                                             </tr>
                                             {% endfor %}
@@ -77,18 +79,23 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="update-cases-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        Update Success!
-                    </div>
-                    <div class="modal-body">
-        
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 {% include 'footer.html' %}
+<div class="modal fade" id="update-cases-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" style="margin-top: 70px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    Update Sucess!
+                </div>
+            </div>
+            <div class="modal-body">
+                The latest cases from Aus Gov has been fetched.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

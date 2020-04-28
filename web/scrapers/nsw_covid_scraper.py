@@ -79,6 +79,15 @@ class NswCovidScraper:
         close_db()
 
         return last_case_update[0]
+    
+    def load_all_cases(self):
+        c = get_db().cursor()
+        c.execute('''SELECT * FROM cases_by_loc''')
+        cases = [[item for item in results] for results in c.fetchall()]
+        c.close()
+        close_db()
+
+        return cases
 
     def get_total_cases(self):
         return self.get_last_case_id('cases_by_loc')
