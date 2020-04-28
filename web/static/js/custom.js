@@ -139,6 +139,7 @@ jQuery(document).ready(function ($) {
 
   $('#council-search').change(
     function() {
+      document.getElementById('postcode-search').value = '';
       // Declare variables
       var input, filter, tr, th, td, i, txtValue;
       input = document.getElementById('council-search');
@@ -161,6 +162,7 @@ jQuery(document).ready(function ($) {
 
   $('#postcode-search').keyup(
     function() {
+      document.getElementById('council-search').selectedIndex = -1;
       // Declare variables
       var input, filter, tr, th, td, i, txtValue;
       input = document.getElementById('postcode-search');
