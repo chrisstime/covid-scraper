@@ -19,59 +19,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="nsw">
-                            <div class="row">
-                                <div class="span6">
-                                    <h5>Total Cases in NSW: <strong>{{ total_cases_nsw }}</strong></h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <form>
-                                    <div class="form-group">
-                                        <div class="span4">
-                                            <label for="council-search">Select Council:</label>
-                                            <select class="form-control" id="council-search">
-                                                <option disabled selected value> -- select a council -- </option>
-                                                {% for council in councils %}
-                                                <option value="{{ council }}">{{ council }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        <div class="span2">
-                                            <p><strong>OR</strong></p>
-                                        </div>
-                                        <div class="span2">
-                                            <label for="postcode-search">Find by Postcode:</label>
-                                            <input type="text" class="form-control" id="postcode-search"
-                                                placeholder="Search by postcode...">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="row">
-                                <div class="span11">
-                                    <h4>Results</h4>
-                                    <table class="table table-striped" id="results">
-                                        <thead>
-                                            <th>ID</th>
-                                            <th>Notification Date</th>
-                                            <th id="postcode">Postcode</th>
-                                            <th>Local Health District Code</th>
-                                            <th>Local Health District</th>
-                                            <th>Local Gov Area Code</th>
-                                            <th id="councils">Local Gov Area</th>
-                                        </thead>
-                                        <tbody>
-                                            {% for row in results %}
-                                            <tr>
-                                                {% for item in row %}
-                                                <td>{{item}}</td>
-                                                {% endfor %}
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            {% include 'nsw.html' %}
                         </div>
                         <div class="tab-pane" id="vic"></div>
                         <div class="tab-pane" id="qld"></div>
@@ -94,8 +42,11 @@
                 The latest cases from Aus Gov has been fetched.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="page-refresh">
+                    Refresh Page <i class="icon-refresh"></i></button>
             </div>
         </div>
     </div>
 </div>
+
+<script src="{{ url_for( 'static', filename='js/australiaCases.js') }}"></script>

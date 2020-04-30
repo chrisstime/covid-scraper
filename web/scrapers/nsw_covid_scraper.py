@@ -88,6 +88,3 @@ class NswCovidScraper:
         close_db()
 
         return cases
-
-    def get_total_cases(self):
-        return self.get_last_case_id('cases_by_loc')
